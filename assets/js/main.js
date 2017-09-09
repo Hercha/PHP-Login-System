@@ -22,5 +22,25 @@ $(document).on("submit", "form.js-register", function(event) {
     //Assuming code get this far, we can start the ajax process
     _error.hide();
 
+    $.ajax({
+        type: 'POST',
+        url: '/ajax/register.php',
+        data: dataObj,
+        dataType: 'json',
+        async: true,
+    })
+    done(function ajaxDone(data) {
+        //What ever data is
+        console.log(data);
+    })
+    .fail(function ajaxFailed(e) {
+        // This failed
+        console.log(e);
+    })
+    .always(function ajaxAlwaysDoThis(data) {
+        //Always do
+        console.log('Always');
+    })
+
     return false; //Stays at the page
 });
