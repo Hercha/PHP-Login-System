@@ -12,7 +12,12 @@
 
             $return = [];
 
+            $email = Filter::String( $_POST['email'] );
+
             // Make sure the user does not exist.
+            $findUser = $con->prepare("SELECT user_id FROM users WHERE email = $email LIMIT 1");
+            $findUser->bindParam(":email", $email, PDO::PARAM_STR);
+            $findUser->execute();
 
             // Make sure the user CAN be added AND is added.
 
