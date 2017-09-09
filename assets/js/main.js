@@ -24,7 +24,7 @@ $(document).on("submit", "form.js-register", function(event) {
 
     $.ajax({
         type: 'POST',
-        url: '/ajax/register.php',
+        url: 'ajax/register.php',
         data: dataObj,
         dataType: 'json',
         async: true,
