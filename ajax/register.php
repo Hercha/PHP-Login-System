@@ -18,7 +18,8 @@
 
             // Return the proper information to JavaScript to rdirect us.
 
-            $return['redirect'] = 'createphpajaxlogin/php_login_course/index.php?this-was-a-redirect';
+            $return['redirect'] = 'createphpajaxlogin/php_login_course/dashboard.php';
+            $return['name'] = "Hoho Taulion";
 
             echo json_encode($return, JSON_PRETTY_PRINT); exit;
 

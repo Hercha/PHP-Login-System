@@ -35,6 +35,7 @@ $(document).on("submit", "form.js-register", function(event) {
         if(data.redirect !== undefined) {
             window.location = data.redirect;
         }
+        alert(data.name);
     })
     .fail(function ajaxFailed(e) {
         // This failed
