@@ -13,10 +13,9 @@
             $return = [];
 
             $email = Filter::String( $_POST['email'] );
-            $email = strtolower($email);
 
             // Make sure the user does not exist.
-            $findUser = $con->prepare("SELECT user_id FROM users WHERE email = $email LIMIT 1");
+            $findUser = $con->prepare("SELECT user_id FROM users WHERE email =  LOWER(:email) LIMIT 1");
             $findUser->bindParam(":email", $email, PDO::PARAM_STR);
             $findUser->execute();
 
