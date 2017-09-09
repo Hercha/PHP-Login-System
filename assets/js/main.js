@@ -4,15 +4,15 @@ $(document).on("submit", "form.js-register", function(event) {
     var _form = $(this);// form stored in variabel
     var _error = $(".js-error", _form);
 
-    var data = {
+    var dataObj = {
         email: $("input[type='email']", _form).val(),
         password: $("input[type='password']", _form).val()
-    }
+    };
 
-    if(data.email.length < 6) {
+    if(dataObj.email.length < 6) {
         _error.text("Please enter a valid email address").show();
         return false;
-    } else if (data.password.length < 11) {
+    } else if (dataObj.password.length < 11) {
         _error
             .text("Please enter a passphrase that is at least 11 characters long.")
             .show();
@@ -24,14 +24,17 @@ $(document).on("submit", "form.js-register", function(event) {
 
     $.ajax({
         type: 'POST',
-        url: 'ajax/register.php',
+        url: 'createphpajaxlogin/php_login_course/ajax/register.php',
         data: dataObj,
         dataType: 'json',
         async: true,
     })
-    done(function ajaxDone(data) {
+    .done(function ajaxDone(data) {
         //What ever data is
         console.log(data);
+        if(data.redirect !== undefined) {
+            window.location = data.redirect;
+        }
     })
     .fail(function ajaxFailed(e) {
         // This failed
