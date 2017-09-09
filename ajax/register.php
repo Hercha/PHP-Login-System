@@ -13,6 +13,7 @@
             $return = [];
 
             $email = Filter::String( $_POST['email'] );
+            $email = strtolower($email);
 
             // Make sure the user does not exist.
             $findUser = $con->prepare("SELECT user_id FROM users WHERE email = $email LIMIT 1");
