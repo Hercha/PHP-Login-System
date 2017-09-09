@@ -7,34 +7,44 @@
     require_once "../inc/config.php";
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            //Always return JSON format
-            header('Content-Type: application/json');
+        //Always return JSON format
+        header('Content-Type: application/json');
 
-            $return = [];
+        $return = [];
 
-            $email = Filter::String( $_POST['email'] );
+        $email = Filter::String( $_POST['email'] );
 
-            // Make sure the user does not exist.
-            $findUser = $con->prepare("SELECT user_id FROM users WHERE email =  LOWER(:email) LIMIT 1");
-            $findUser->bindParam(":email", $email, PDO::PARAM_STR);
-            $findUser->execute();
+        // Make sure the user does not exist.
+        $findUser = $con->prepare("SELECT user_id FROM users WHERE email =  LOWER(:email) LIMIT 1");
+        $findUser->bindParam(":email", $email, PDO::PARAM_STR);
+        $findUser->execute();
 
-            if($findUser->rowCount() == 1) {
-                // User exist
-            } else {
-                // User does not exist, add them now
-                // We can also check to see if they are able to log in.
-                $return['error'] = "You already have an account";
-            }
+        if($findUser->rowCount() == 1) {
+            // User exist
+            // We can also check to see if they are able to log in.
+            $return['error'] = "You already have an account";
+            $return['is logged in'] = false;
+        } else {
+            // User does not exist, add them now
 
-            // Make sure the user CAN be added AND is added.
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            // Return the proper information to JavaScript to rdirect us.
+            $addUser = $con->prepare("INSERT INTO users(LOWER(email), password) VALUES(:email, :password)");
+            $addUser->bindParam(':email', $email, PDO::PARAM_STR);
+            $addUser->bindParam(':password', $password, PDO::PARAM_STR);
+            $addUser->execute();
 
-            $return['redirect'] = 'createphpajaxlogin/php_login_course/dashboard.php';
-            $return['name'] = "Hoho Taulion";
+            $user_id = $con->lastInsertId();
 
-            echo json_encode($return, JSON_PRETTY_PRINT); exit;
+            $_SESSION['user_id'] = (int) $user_id;
+
+            $return['redirect'] = 'createphpajaxlogin/php_login_course/dashboard.php?message=welcome';
+            $return['is logged in'] = true;
+
+        }
+        $return['name'] = "Hoho Taulion";
+
+        echo json_encode($return, JSON_PRETTY_PRINT); exit;
 
     } else {
         // Die. Kill the script. Redirect the user. Do someting regardless.
