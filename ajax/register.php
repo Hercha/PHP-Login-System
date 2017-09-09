@@ -19,6 +19,14 @@
             $findUser->bindParam(":email", $email, PDO::PARAM_STR);
             $findUser->execute();
 
+            if($findUser->rowCount() == 1) {
+                // User exist
+            } else {
+                // User does not exist, add them now
+                // We can also check to see if they are able to log in.
+                $return['error'] = "You already have an account";
+            }
+
             // Make sure the user CAN be added AND is added.
 
             // Return the proper information to JavaScript to rdirect us.
