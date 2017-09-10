@@ -1,4 +1,4 @@
-$(document).on("submit", "form.js-register, form.js-login", function(event) {
+$(document).on("submit", "form.js-register", function(event) {
     event.preventDefault();
 
     var _form = $(this);// form stored in variabel

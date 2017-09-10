@@ -8,6 +8,19 @@
 
     ForceLogin();
 
+    $user_id = $_SESSION['user_id'];
+    $getUserInfo = $con->prepare("SELECT email, reg_time FROM users WHERE user_id = :user_id LIMIT 1");
+    $getUserInfo->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $getUserInfo->execute();
+
+    if($getUserInfo->rowCount() === 1) {
+      // User was found
+      $User = $getUserInfo->fetch(PDO::FETCH_ASSOC);
+    } else {
+      // User is not signed in
+      header("Location: createphpajaxlogin/php_login_course/logout.php"); exit;
+    }
+
     // echo $_SESSION['user_id'] . ' is your user id';
     // exit;
 
@@ -29,8 +42,10 @@
   <body>
 
     <div class="uk-section uk-container">
-        <p>Dashboard here</p>
+        <h2>Dashboard</h2>
+        <p>Hello <?php echo $User['email']; ?>, you registred at <?php echo $User['reg_time']; ?></p>
         <p>You are signed in as user: <?php echo $_SESSION['user_id'] ?></p>
+        <p><a href="createphpajaxlogin/php_login_course/logout.php">Logout</a></p>
     </div>
     <?php require_once "inc/footer.php"; ?>
 
