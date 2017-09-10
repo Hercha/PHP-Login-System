@@ -1,49 +1,45 @@
-<?php
+<?php 
 
-    //Allow the config
-    define('__CONFIG__', true);    
-        
-    //Require the config
-    require_once "../inc/config.php";
+	// Allow the config
+	define('__CONFIG__', true);
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        //Always return JSON format
-        header('Content-Type: application/json');
+	// Require the config
+	require_once "../inc/config.php"; 
 
-        $return = [];
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		// Always return JSON format
+		// header('Content-Type: application/json');
 
-        $email = Filter::String( $_POST['email'] );
-        $password = $_POST['password'];
+		$return = [];
 
-        $user_found = User::Find($email, true);
+		$email = Filter::String( $_POST['email'] );
+		$password = $_POST['password'];
 
-        if($user_found {
-            // User exist, try and sign them in
+		$user_found = User::Find($email, true);
 
+		if($user_found) {
+			// User exists, try and sign them in
+			$user_id = (int) $user_found['user_id'];
+			$hash = (string) $user_found['password'];
 
-            $user_id = (int) $user_found['user_id'];
-            $hash = (string) $user_found['password'];
+			if(password_verify($password, $hash)) {
+				// User is signed in
+				$return['redirect'] = 'createphpajaxlogin/php_login_course/dashboard.php';
 
-            if(password_verify($password, $hash)) {
-                // User signed in
-                $return['redirect'] = 'createphpajaxlogin/php_login_course/dashboard.php';
+				$_SESSION['user_id'] = $user_id;
+			} else {
+				// Invalid user email/password combo
+				$return['error'] = "Invalid user email/password combo";
+			}
 
-                $_SESSION['user_id'] = $user_id;
-            } else {
-                // Invalid user email/password combo
-                $return['error'] = "Invalid user email/password combo";
-            }
+		} else {
+			// They need to create a new account
+			$return['error'] = "You do not have an account. <a href='/register.php'>Create one now?</a>";
+		}
 
-
-        } else {
-            // They need to create a new account
-            $return['error'] = "You do not have an account. <a href='createphpajaxlogin/php_login_course/register.php'>Create one now?</a>";
-        }
-
-        echo json_encode($return, JSON_PRETTY_PRINT); exit;
-
-    } else {
-        // Die. Kill the script. Redirect the user. Do someting regardless.
-        exit("Invalid URL");
-    }
+		echo json_encode($return, JSON_PRETTY_PRINT); exit;
+	} else {
+		// Die. Kill the script. Redirect the user. Do something regardless.
+		exit('Invalid URL');
+	}
 ?>

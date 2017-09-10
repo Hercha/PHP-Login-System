@@ -22,7 +22,7 @@ class User {
 		$user->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 		$user->execute();
 
-		if($user->rowCount() === 1) {
+		if($user->rowCount() == 1) {
 			$user = $user->fetch(PDO::FETCH_OBJ);
 
 			$this->email 	= (string) $user->email;
