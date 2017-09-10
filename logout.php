@@ -1,6 +1,6 @@
 <?php
 
-    $past = time() - 3600;
+    //$past = time() - 3600; // older php versions
 
     session_start();
     session_destroy();
