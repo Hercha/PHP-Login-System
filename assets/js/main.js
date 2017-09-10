@@ -1,3 +1,5 @@
+// Main js file
+
 $(document).on("submit", "form.js-register form.js-login", function(event) {
     event.preventDefault();
 
