@@ -15,7 +15,7 @@
         $email = Filter::String( $_POST['email'] );
         $password = $_POST['password'];
 
-        $user_found = FindUser($con, $email, true);
+        $user_found = User::Find($email, true);
 
         if($user_found {
             // User exist, try and sign them in
