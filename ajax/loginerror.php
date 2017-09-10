@@ -44,6 +44,6 @@
 
     } else {
         // Die. Kill the script. Redirect the user. Do someting regardless.
-        exit("Invalid URL");
+        exit('Invalid URL');
     }
 ?>
