@@ -1,0 +1,10 @@
+News feeds
+Friend feed
+Change email
+Change password
+Reset password
+Invite module
+Add firstname
+Add lastname
+Add email confirmation
+Add sms confirmation (via Twilio)
